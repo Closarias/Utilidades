@@ -4,39 +4,30 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import es.fpsumma.dam2.utilidades.model.Tarea
+import es.fpsumma.dam2.utilidades.model.Asignaturas
 
 // Esto le dice a Room: “esta es mi base de datos”
 // - entities: qué tablas tendrá (aquí, la tabla Tarea)
 // - version: versión del esquema (si cambias campos/tabla, suele subir)
 // - exportSchema=false: no guarda el “historial” del esquema en archivos
-@Database(entities = [Tarea::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [Asignaturas::class], version = 1, exportSchema = false)
 
-    // Room necesita que le digamos qué DAO vamos a usar para acceder a la BD
-    // (el DAO contiene métodos como insertar, borrar, consultar, etc.)
-    abstract fun tareaDao(): AsignaturaDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun asignaturaDao(): AsignaturaDao
 
     companion object {
-        // Guardamos aquí la única instancia de la BD (para no crear 20 bases de datos)
         @Volatile
         private var Instance: AppDatabase? = null
 
-        // Función para obtener la BD desde cualquier parte de la app
         fun getDatabase(context: Context): AppDatabase {
-
-            // Si ya existe, la devolvemos.
-            // Si no existe, la creamos (una sola vez).
             return Instance ?: synchronized(this) {
-
-                // synchronized: evita que 2 hilos creen la BD a la vez
                 Room.databaseBuilder(
-                                context,
-                                AppDatabase::class.java,
-                                "utilidades" // nombre del archivo de la base de datos en el móvil
-                            ).fallbackToDestructiveMigration(false)
+                    context,
+                    AppDatabase::class.java,
+                    "asignaturas"
+                ).fallbackToDestructiveMigration(false)
                     .build()
-                    .also { Instance = it } // guardamos la BD creada para reutilizarla
+                    .also { Instance = it }
             }
         }
     }

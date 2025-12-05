@@ -35,29 +35,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import es.fpsumma.dam2.utilidades.model.Tarea
-import es.fpsumma.dam2.utilidades.ui.viewmodel.TareasViewModel
+import es.fpsumma.dam2.utilidades.ui.viewmodel.AsignaturasViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ListadoTareasScreen(navController: NavController, vm: TareasViewModel, modifier: Modifier= Modifier) {
+fun ListadoTareasScreen(navController: NavController, vm: AsignaturasViewModel, modifier: Modifier= Modifier) {
 
-    val tareas by vm.tareas.collectAsState()
+    val tareas by vm.asignatuas.collectAsState()
 
     var titulo by rememberSaveable { mutableStateOf("") }
     var descripcion by rememberSaveable { mutableStateOf("") }
 
-    fun handleAddTarea(){
-        vm.addTarea(titulo,descripcion)
+    /**fun handleAddTarea(){
+        vm.addAsignatura()
         titulo=""
         descripcion=""
-    }
+    }**/
 
-    fun handleDeleteTarea(tarea: Tarea){
+    /**fun handleDeleteTarea(tarea: Tarea){
         vm.deleteTarea(tarea)
-    }
+    }**/
 
     Scaffold(
         topBar = {
@@ -94,7 +93,7 @@ fun ListadoTareasScreen(navController: NavController, vm: TareasViewModel, modif
             )
             Spacer(Modifier.height(8.dp))
             Button(
-                onClick = ::handleAddTarea,
+                onClick = {}, /**::handleAddTarea,**/
                 modifier = Modifier.fillMaxWidth()
             ) { Text("Añadir nota") }
             HorizontalDivider(modifier.padding(vertical = 16.dp))
@@ -114,11 +113,11 @@ fun ListadoTareasScreen(navController: NavController, vm: TareasViewModel, modif
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         ListItem(
-                            headlineContent = { Text(tarea.titulo) },
-                            supportingContent = { Text(tarea.descripcion) },
+                            headlineContent = { /**Text(tarea.titulo)**/ },
+                            supportingContent = { /**Text(tarea.descripcion)**/ },
                             trailingContent = {
                                 IconButton(
-                                    onClick = {handleDeleteTarea(tarea)},
+                                    onClick = {/**handleDeleteTarea(tarea)**/},
                                     modifier = modifier.size(48.dp)
                                 ) {
                                     Icon(
