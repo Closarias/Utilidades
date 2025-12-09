@@ -19,7 +19,7 @@ class AsignaturasViewModel(app: Application) : AndroidViewModel(app) {
 
     private val dao = db.asignaturaDao()
 
-    val asignatuas: StateFlow<List<Asignaturas>> =
+    val asignaturas: StateFlow<List<Asignaturas>> =
         dao.getAllAsignaturas().stateIn(
             viewModelScope,
             SharingStarted.Lazily,

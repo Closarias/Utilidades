@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import es.fpsumma.dam2.utilidades.ui.navigation.Routes
 import es.fpsumma.dam2.utilidades.ui.viewmodel.AsignaturasViewModel
 
 @Composable
@@ -39,7 +40,14 @@ fun HomeScreen(navController: NavController, vm: AsignaturasViewModel, modifier:
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Asignaturas") }
+                title = { Text("Asignaturas") },
+                actions = {
+                    Button(
+                        onClick = {navController.navigate(Routes.LISTADO_TAREAS)}
+                    ) {
+                        Text("Lista asignaturas")
+                    }
+                }
             )
         }
     ) { innerPadding ->
@@ -60,20 +68,20 @@ fun HomeScreen(navController: NavController, vm: AsignaturasViewModel, modifier:
                 modifier = Modifier.padding(4.dp).fillMaxWidth()
             ) {
                 FilterChip(
-                    selected = trimestre == "primer trimestre",
-                    onClick = {trimestre = "primer trimestre"},
+                    selected = trimestre == "1º trimestre",
+                    onClick = {trimestre = "1º trimestre"},
                     label = {Text("1º trimestre")},
                     modifier = Modifier.padding(end = 4.dp)
                 )
                 FilterChip(
-                    selected = trimestre == "segundo trimestre",
-                    onClick = {trimestre = "segundo trimestre"},
+                    selected = trimestre == "2º trimestre",
+                    onClick = {trimestre = "2º trimestre"},
                     label = {Text("2º trimestre")},
                     modifier = Modifier.padding(end = 4.dp)
                 )
                 FilterChip(
-                    selected = trimestre == "tercer trimestre",
-                    onClick = {trimestre = "tercer trimestre"},
+                    selected = trimestre == "3º trimestre",
+                    onClick = {trimestre = "3º trimestre"},
                     label = {Text("3º trimestre")},
                     modifier = Modifier.padding(end = 4.dp)
                 )
@@ -88,9 +96,15 @@ fun HomeScreen(navController: NavController, vm: AsignaturasViewModel, modifier:
                 modifier = Modifier.fillMaxWidth().padding(4.dp)
             )
             Button(
-                onClick = {},
+                onClick = {
+                    vm.addAsignatura(
+                        asignatura = asignatura,
+                        trimestre = trimestre,
+                        nota = nota.toInt()
+                    )
+                    navController.navigate(Routes.LISTADO_TAREAS)},
                 modifier = Modifier.fillMaxWidth()
-            ) { "Guardar nota" }
+            ) { Text("Guardar nota") }
         }
     }
 }

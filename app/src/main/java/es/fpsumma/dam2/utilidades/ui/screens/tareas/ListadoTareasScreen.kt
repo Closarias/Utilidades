@@ -33,8 +33,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import es.fpsumma.dam2.utilidades.ui.navigation.Routes
 import es.fpsumma.dam2.utilidades.ui.viewmodel.AsignaturasViewModel
 
 
@@ -43,10 +45,7 @@ import es.fpsumma.dam2.utilidades.ui.viewmodel.AsignaturasViewModel
 @Composable
 fun ListadoTareasScreen(navController: NavController, vm: AsignaturasViewModel, modifier: Modifier= Modifier) {
 
-    val tareas by vm.asignatuas.collectAsState()
-
-    var titulo by rememberSaveable { mutableStateOf("") }
-    var descripcion by rememberSaveable { mutableStateOf("") }
+    val asignaturas by vm.asignaturas.collectAsState()
 
     /**fun handleAddTarea(){
         vm.addAsignatura()
@@ -61,9 +60,9 @@ fun ListadoTareasScreen(navController: NavController, vm: AsignaturasViewModel, 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Listado de tareas") },
+                title = { Text("Agregar asignaturas") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = { navController.navigate(Routes.HOME) }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
@@ -76,28 +75,6 @@ fun ListadoTareasScreen(navController: NavController, vm: AsignaturasViewModel, 
             .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-            OutlinedTextField(
-                value = titulo,
-                onValueChange = { titulo = it },
-                label = { Text("Título") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(Modifier.height(8.dp))
-            OutlinedTextField(
-                value = descripcion,
-                onValueChange = { descripcion = it },
-                label = { Text("Descripción") },
-                singleLine = false,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(Modifier.height(8.dp))
-            Button(
-                onClick = {}, /**::handleAddTarea,**/
-                modifier = Modifier.fillMaxWidth()
-            ) { Text("Añadir nota") }
-            HorizontalDivider(modifier.padding(vertical = 16.dp))
-
             LazyColumn(
                 modifier = modifier
                     .fillMaxSize()
@@ -105,19 +82,30 @@ fun ListadoTareasScreen(navController: NavController, vm: AsignaturasViewModel, 
             ) {
 
                 items(
-                    items = tareas,
+                    items = asignaturas,
                     key = { it.id }
-                ) { tarea ->
+                ) { asignatura ->
                     Card (
                         modifier = modifier,
+
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         ListItem(
-                            headlineContent = { /**Text(tarea.titulo)**/ },
-                            supportingContent = { /**Text(tarea.descripcion)**/ },
+                            headlineContent = {
+                                Text(
+                                    asignatura.asignatura,
+                                    fontWeight = FontWeight.Bold
+                                )},
+                            supportingContent = { Text(asignatura.trimestre) },
+                            leadingContent = {
+                                Text(
+                                    asignatura.nota.toString(),
+                                    modifier = modifier.padding(end = 12.dp))},
                             trailingContent = {
                                 IconButton(
-                                    onClick = {/**handleDeleteTarea(tarea)**/},
+                                    onClick = {
+                                        vm.deleteAsignatura(asignatura)
+                                    },
                                     modifier = modifier.size(48.dp)
                                 ) {
                                     Icon(
